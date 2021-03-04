@@ -29,7 +29,7 @@ function App(){
     newArray = newArray.sort();
     글제목변경(newArray);
   }
-
+ 
   function 모달(){
     let newArray = [...글제목]; //딥카피
     newArray = newArray.sort();
