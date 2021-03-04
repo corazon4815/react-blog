@@ -1,5 +1,6 @@
 /*eslint-disable */
-import react, {useState} from 'react';
+import React, {useState, Component} from 'react';
+import ReactDOM from 'react-dom';
 import logo from './logo.svg';
 import './App.css';
 
@@ -9,10 +10,11 @@ function App(){
   //여기 있는 state는 건들지말고 복사본으로 변경함수를 이용해서 변경하는게 좋음
   let [글제목, 글제목변경] = useState(['남자코트 추천','우동 맛집','여자 코트 추천']);
   let [따봉, 따봉변경] = useState(0);
-
   let [modal, modal변경] = useState(false); //스위치로 담음
-
   let [누른제목, 누른제목변경] = useState(0);
+  
+  let [입력값, 입력값변경] = useState(''); 
+  
   
   function 반복된UI(){
     let 어레이 = [];
@@ -59,9 +61,6 @@ function App(){
         <hr/>
   </div>  */}
       
-
-
-
       {
         글제목.map((글, i)=>{
           return (
@@ -82,6 +81,22 @@ function App(){
     <button onClick={ ()=>{누른제목변경(1)} }>버튼2</button>
     <button onClick={ ()=>{누른제목변경(2)} }>버튼3</button>*/}
 
+{/**입력값}
+<input onChange={ (e)=>{ 입력값변경(e.target.value) } } /> */}  
+{/**onChange,onInput : 뭔가 입력이 될때, 값이 바뀔때마다 */}
+{/**사용자가 입력한 값 : e.target.value */}
+
+<div className="publish">
+  <input onChange={ (e)=>{입력값변경(e.target.value)} }/>
+  <button onClick={ ()=>{
+    let arrayCopy = [...글제목];
+    arrayCopy.unshift(입력값);
+    글제목변경(arrayCopy);
+    } }>저장</button>
+</div>
+<Profile></Profile>
+
+<br/><br/>
 <button onClick={()=>{modal변경(!modal)}}>
                                모달열고닫기</button>
 
@@ -103,12 +118,45 @@ function App(){
 //컴포넌트 만들기(대문자로시작) //html관리가 편해짐 
 function Modal(props){ //이 props에는 부모에게 전달받은 state 모든게 들어있음
   return (
-    <div className="modal">
-      <h2>제목 {props.글제목[props.누른제목]}</h2>
+    <div className="modal" key={i}>
+      <h2>{props.글제목[props.누른제목]}</h2>
       <p>날짜</p>
       <p>상세내용</p>
     </div>
   )
 }
+//react 구문법 : 클래스문법
+//class : 변수와 함수를 보관하는 덩어리
+class Profile extends React.Component {
+  constructor(){
+    super();
+    this.state = {name:'Kim', age:30}
+    //this.changeName = this.changeName.bind(this);
+  }
+  
+  // changeName(){
+  //   this.setState({name:'Park'})
+  // }
+
+  changeName = () => {
+    this.setState({name:'Park'})
+  }
+   
+
+
+  render(){
+    return(
+      <div>
+        <h3>프로필입니다</h3>
+        <p>저는 {this.state.name}입니다</p>
+        {/* <button onClick={()=>{this.setState({name:'Park'})}}>이름변경 버튼</button> */}
+        {/**setStatestate : 변경함수와 다르게 변경할 state만 넣음*/}
+        {/* <button onClick={this.changeName.bind(this)}>버튼</button> */}
+        <button onClick={this.changeName}>버튼</button>
+      </div>
+    )
+  }
+}
+
 
 export default App;
